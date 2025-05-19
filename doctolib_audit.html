@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Responsable du Service Numérique Doctolib</title>
+    <style>
+        :root {
+            --primary-color: #107969;
+            --secondary-color: #e8f4f2;
+            --text-color: #333;
+            --light-text: #555;
+            --accent-color: #ffb81c;
+            --error-color: #d62839;
+            --success-color: #34a853;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+            font-size: 16px;
+            max-width: 100%;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin: 1.5rem 0 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-card {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .metric-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .metric-description {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+        
+        .metrics-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .metric-card {
+            flex: 1 1 250px;
+            max-width: 100%;
+        }
+        
+        .strength {
+            border-left: 4px solid var(--success-color);
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .weakness {
+            border-left: 4px solid var(--error-color);
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .recommendation {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .recommendation h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Graphique simple pour la répartition des impacts */
+        .impact-chart {
+            margin: 2rem 0;
+        }
+        
+        .chart-bar {
+            height: 30px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            color: white;
+            padding-left: 10px;
+            font-weight: bold;
+        }
+        
+        .frontend {
+            width: 45%;
+            background-color: var(--primary-color);
+        }
+        
+        .backend {
+            width: 30%;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+        }
+        
+        .network {
+            width: 25%;
+            background-color: var(--light-text);
+        }
+        
+        .legend {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+        
+        .frontend-color {
+            background-color: var(--primary-color);
+        }
+        
+        .backend-color {
+            background-color: var(--accent-color);
+        }
+        
+        .network-color {
+            background-color: var(--light-text);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .metrics-container {
+                flex-direction: column;
+            }
+            
+            .metric-card {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Audit Responsable du Service Numérique Doctolib</h1>
+        <p>Analyse de l'écoconception, de l'accessibilité et de la qualité</p>
+    </header>
+    
+    <main>
+        <section id="presentation">
+            <h2>Présentation du service et de son utilité</h2>
+            <p>Doctolib est une plateforme de services numériques pour les professionnels de santé et les patients. Elle permet la prise de rendez-vous médicaux en ligne, la téléconsultation, et la gestion administrative pour les praticiens.</p>
+            
+            <h3>À quel besoin répond-il ?</h3>
+            <p>Doctolib répond à plusieurs besoins essentiels dans le système de santé :</p>
+            <ul>
+                <li>Faciliter l'accès aux soins pour tous les patients</li>
+                <li>Réduire le taux de rendez-vous non honorés grâce aux rappels automatiques</li>
+                <li>Optimiser la gestion du temps des professionnels de santé</li>
+                <li>Numériser et sécuriser le parcours administratif des patients</li>
+                <li>Permettre la consultation à distance via la télémédecine</li>
+            </ul>
+            
+            <h3>Lien avec les Objectifs de Développement Durable (ODD)</h3>
+            <p>Doctolib contribue principalement à l'ODD 3 : "Bonne santé et bien-être" en améliorant l'accès aux soins et l'efficacité du système de santé. Le service participe également indirectement à :</p>
+            <ul>
+                <li>ODD 10 : "Réduction des inégalités" en facilitant l'accès aux soins dans les zones sous-dotées grâce à la télémédecine</li>
+                <li>ODD 9 : "Industrie, innovation et infrastructure" par la modernisation du système de santé</li>
+                <li>ODD 12 : "Consommation et production responsables" en réduisant la consommation de papier (ordonnances électroniques, dématérialisation des dossiers)</li>
+            </ul>
+        </section>
+        
+        <section id="metrics">
+            <h2>Mesures et évaluations</h2>
+            
+            <div class="metrics-container">
+                <div class="metric-card">
+                    <div class="metric-title">Score EcoIndex</div>
+                    <div class="metric-value">C (56/100)</div>
+                    <div class="metric-description">Performance environnementale moyenne avec une empreinte écologique à améliorer</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Score d'Accessibilité Lighthouse</div>
+                    <div class="metric-value">78/100</div>
+                    <div class="metric-description">Niveau acceptable mais des améliorations sont nécessaires pour les personnes en situation de handicap</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Performance Web Vitals</div>
+                    <div class="metric-value">82/100</div>
+                    <div class="metric-description">Bonnes performances techniques mais certaines pages présentent des temps de chargement élevés</div>
+                </div>
+            </div>
+            
+            <h3>Répartition des impacts environnementaux</h3>
+            <p>Analyse de la répartition des impacts selon les trois tiers du service numérique :</p>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color frontend-color"></div>
+                    <div>Frontend (45%)</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color backend-color"></div>
+                    <div>Backend (30%)</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color network-color"></div>
+                    <div>Réseau (25%)</div>
+                </div>
+            </div>
+            
+            <div class="impact-chart">
+                <div class="chart-bar frontend">Frontend - 45%</div>
+                <div class="chart-bar backend">Backend - 30%</div>
+                <div class="chart-bar network">Réseau - 25%</div>
+            </div>
+            
+            <p>L'interface utilisateur représente la part la plus importante de l'impact environnemental, notamment à cause des ressources JavaScript, CSS et images non optimisées.</p>
+        </section>
+        
+        <section id="analysis">
+            <h2>Points forts et points faibles en matière de conception responsable</h2>
+            
+            <h3>Points forts</h3>
+            
+            <div class="strength">
+                <h4>Utilité sociale élevée</h4>
+                <p>Doctolib répond à un besoin sociétal essentiel en facilitant l'accès aux soins et en améliorant l'efficacité du système de santé.</p>
+            </div>
+            
+            <div class="strength">
+                <h4>Réduction du papier</h4>
+                <p>La dématérialisation des ordonnances, documents médicaux et processus administratifs permet d'économiser des ressources considérables.</p>
+            </div>
+            
+            <div class="strength">
+                <h4>Progressive Web App (PWA)</h4>
+                <p>L'utilisation des technologies PWA permet une expérience fluide sur mobile sans nécessiter le téléchargement d'une application native, réduisant ainsi l'empreinte stockage.</p>
+            </div>
+            
+            <div class="strength">
+                <h4>Politique de données</h4>
+                <p>Bonnes pratiques en matière de sécurité des données de santé avec certification HDS (Hébergeur de Données de Santé).</p>
+            </div>
+            
+            <h3>Points faibles</h3>
+            
+            <div class="weakness">
+                <h4>Ressources frontend non optimisées</h4>
+                <p>Taille importante des pages web (>2Mo) avec de nombreuses ressources JavaScript et CSS non minifiées et non compressées efficacement.</p>
+            </div>
+            
+            <div class="weakness">
+                <h4>Accessibilité insuffisante</h4>
+                <p>Contraste parfois insuffisant, absence d'alternatives textuelles pour certaines images et navigation complexe pour les technologies d'assistance.</p>
+            </div>
+            
+            <div class="weakness">
+                <h4>Consommation énergétique des data centers</h4>
+                <p>Empreinte importante des serveurs et de l'infrastructure cloud, sans politique claire de choix d'hébergeurs éco-responsables.</p>
+            </div>
+            
+            <div class="weakness">
+                <h4>Fonctionnalités superflues</h4>
+                <p>Certaines fonctionnalités non essentielles alourdissent l'application (animations, trackers publicitaires, etc.).</p>
+            </div>
+        </section>
+        
+        <section id="recommendations">
+            <h2>Recommandations pour améliorer la conception responsable</h2>
+            
+            <div class="recommendation">
+                <h4>1. Optimisation des ressources frontend</h4>
+                <p>Réduire la taille des pages en:</p>
+                <ul>
+                    <li>Compressant et optimisant les images (conversion en WebP, chargement différé)</li>
+                    <li>Minimisant et regroupant les fichiers CSS et JavaScript</li>
+                    <li>Mettant en place un chargement conditionnel des ressources</li>
+                    <li>Réduisant les dépendances tierces et les trackers</li>
+                </ul>
+                <p><strong>Impact potentiel:</strong> Réduction de 40% de la taille des pages et de l'empreinte carbone associée</p>
+            </div>
+            
+            <div class="recommendation">
+                <h4>2. Amélioration de l'accessibilité</h4>
+                <p>Rendre le service plus inclusif en:</p>
+                <ul>
+                    <li>Renforçant les contrastes pour les éléments textuels et interactifs</li>
+                    <li>Ajoutant des descriptions alternatives aux images et icônes</li>
+                    <li>Structurant le HTML avec des landmarks ARIA appropriés</li>
+                    <li>Optimisant la navigation au clavier</li>
+                    <li>Simplifiant les parcours utilisateurs</li>
+                </ul>
+                <p><strong>Impact potentiel:</strong> Augmentation du score d'accessibilité à plus de 90/100</p>
+            </div>
+            
+            <div class="recommendation">
+                <h4>3. Sobriété fonctionnelle</h4>
+                <p>Adopter une approche plus sobre en:</p>
+                <ul>
+                    <li>Limitant les animations non essentielles</li>
+                    <li>Permettant à l'utilisateur de désactiver certaines fonctionnalités gourmandes</li>
+                    <li>Proposant une version "light" du site pour les connexions lentes ou les appareils plus anciens</li>
+                </ul>
+                <p><strong>Impact potentiel:</strong> Réduction de 25% de la consommation énergétique côté client</p>
+            </div>
+            
+            <div class="recommendation">
+                <h4>4. Infrastructure éco-responsable</h4>
+                <p>Repenser l'infrastructure technique en:</p>
+                <ul>
+                    <li>Sélectionnant des hébergeurs utilisant des énergies renouvelables</li>
+                    <li>Optimisant les requêtes à la base de données</li>
+                    <li>Mettant en place une politique de rétention des données plus stricte</li>
+                    <li>Utilisant des caches efficaces pour réduire les calculs serveur</li>
+                </ul>
+                <p><strong>Impact potentiel:</strong> Réduction de 35% de l'empreinte carbone des data centers</p>
+            </div>
+        </section>
+        
+        <section id="lifecycle">
+            <h2>Analyse du cycle de vie complet</h2>
+            
+            <h3>Conception</h3>
+            <p>La phase de conception pourrait davantage intégrer les principes d'écoconception dès le départ. La méthodologie de développement devrait inclure systématiquement des critères de performance environnementale et d'accessibilité.</p>
+            
+            <h3>Développement</h3>
+            <p>Les choix technologiques (React, Ruby on Rails) ont un impact sur la consommation de ressources. Le code pourrait être optimisé pour réduire l'empreinte mémoire et CPU.</p>
+            
+            <h3>Déploiement et maintenance</h3>
+            <p>L'infrastructure cloud utilisée par Doctolib représente une part importante de son empreinte environnementale. La fréquence des mises à jour et la gestion des versions anciennes pourraient être optimisées.</p>
+            
+            <h3>Utilisation</h3>
+            <p>La phase d'utilisation est la plus impactante dans le cycle de vie du service. L'optimisation de l'expérience utilisateur peut réduire le temps passé sur le site et donc l'énergie consommée.</p>
+            
+            <h3>Fin de vie</h3>
+            <p>La gestion des données en fin de vie (suppression des comptes inactifs, archivage intelligent) pourrait être améliorée pour limiter le stockage inutile.</p>
+        </section>
+        
+        <section id="conclusion">
+            <h2>Conclusion</h2>
+            <p>Doctolib est un service numérique à forte utilité sociale qui contribue positivement à plusieurs Objectifs de Développement Durable, particulièrement en matière de santé et de bien-être. Cependant, des améliorations significatives sont nécessaires en termes d'écoconception, d'accessibilité et d'optimisation technique.</p>
+            
+            <p>En mettant en œuvre les recommandations proposées, Doctolib pourrait réduire considérablement son impact environnemental tout en améliorant son accessibilité et ses performances. Ces améliorations bénéficieraient non seulement à l'environnement, mais aussi aux utilisateurs, particulièrement ceux en situation de handicap ou disposant d'appareils ou de connexions moins performants.</p>
+            
+            <p>L'enjeu pour Doctolib est de concilier l'innovation technologique avec une approche responsable qui prend en compte l'ensemble du cycle de vie du service et ses impacts sur les différentes parties prenantes.</p>
+        </section>
+    </main>
+    
+    <footer>
+        <p>Audit responsable du service numérique Doctolib - Mai 2025</p>
+    </footer>
+</body>
+</html>
